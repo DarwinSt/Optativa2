@@ -1,18 +1,21 @@
 import random
 import string
+from datetime import datetime
 
-def generar_id():
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+def generar_identificador():
+    caracteres = string.ascii_letters + string.digits
+    return ''.join(random.sample(caracteres, 8))
 
-def es_par(n):
-    return n % 2 == 0
+def es_numero_par(numero):
+    return numero % 2 == 0
 
-def calcular_edad(fecha_nacimiento):
-    from datetime import datetime
-    nacimiento = datetime.strptime(fecha_nacimiento, "%Y-%m-%d")
+def obtener_edad(fecha_nac):
+    fecha_nacimiento = datetime.strptime(fecha_nac, "%Y-%m-%d")
     hoy = datetime.now()
-    return hoy.year - nacimiento.year - ((hoy.month, hoy.day) < (nacimiento.month, nacimiento.day))
+    edad = hoy.year - fecha_nacimiento.year
+    if (hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day):
+        edad -= 1
+    return edad
 
-
-def ordenar_por_longitud(lista_palabras):
-    return sorted(lista_palabras, key=len)
+def ordenar_por_tamano(palabras):
+    return sorted(palabras, key=lambda palabra: len(palabra))

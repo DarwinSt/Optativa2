@@ -1,13 +1,13 @@
-from funciones import es_par, calcular_edad, generar_id, ordenar_por_longitud
-from clases import Carrito
+from funciones import es_numero_par, obtener_edad, generar_identificador, ordenar_por_tamano
+from clases import CestaCompra
 
 if __name__ == "__main__":
-    print("Es 4 par?:", es_par(4))
-    print("Edad de alguien nacido en 2000-01-01:", calcular_edad("2000-01-01"))
-    print("Generar un ID único:", generar_id())
-    print("Ordenar palabras por longitud:", ordenar_por_longitud(["sol", "estrella", "luna"]))
+    print("¿Es 4 un número par?:", es_numero_par(4))
+    print("Edad de una persona nacida en 2000-01-01:", obtener_edad("2000-01-01"))
+    print("Generar un identificador único:", generar_identificador())
+    print("Ordenar palabras por tamaño:", ordenar_por_tamano(["sol", "estrella", "luna"]))
 
-    carrito = Carrito()
-    carrito.agregar_producto("manzana", 1.5)
-    carrito.agregar_producto("pera", 2.0)
-    print("Subtotal del carrito:", carrito.subtotal)
+    cesta = CestaCompra()
+    cesta.anadir_item("manzana", 1.5)
+    cesta.anadir_item("pera", 2.0)
+    print("Subtotal de la cesta de compra:", cesta.precio_bruto)

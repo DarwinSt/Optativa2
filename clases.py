@@ -1,112 +1,112 @@
-# clases.py
+# carrito_compras.py
 
-class Carrito:
+class CestaCompra:
     def __init__(self):
-        self.productos = {}
-        self.subtotal = 0
+        self.items = {}
+        self.precio_bruto = 0
 
-    def agregar_producto(self, nombre, precio):
-        if nombre in self.productos:
-            self.productos[nombre]['cantidad'] += 1
+    def anadir_item(self, nombre, precio):
+        if nombre in self.items:
+            self.items[nombre]['cantidad'] += 1
         else:
-            self.productos[nombre] = {'precio': precio, 'cantidad': 1}
-        self.subtotal += precio
+            self.items[nombre] = {'precio': precio, 'cantidad': 1}
+        self.precio_bruto += precio
 
-    def calcular_total(self, descuento=0):
-        total = self.subtotal * (1 - descuento / 100)
-        return total if total > 0 else 0
+    def obtener_total(self, rebaja=0):
+        total = self.precio_bruto * (1 - rebaja / 100)
+        return max(0, total)
 
 
-class Inventario:
+class GestionInventario:
     def __init__(self):
-        self.productos = {}
+        self.catalogo = {}
 
-    def agregar_producto(self, id_producto, nombre, cantidad):
-        if id_producto in self.productos:
-            raise ValueError("ID de producto ya existe.")
-        self.productos[id_producto] = {'nombre': nombre, 'cantidad': cantidad}
+    def insertar_producto(self, id_producto, nombre, cantidad):
+        if id_producto in self.catalogo:
+            raise ValueError("El ID del producto ya está registrado.")
+        self.catalogo[id_producto] = {'nombre': nombre, 'cantidad': cantidad}
 
-    def eliminar_producto(self, id_producto):
-        if id_producto not in self.productos:
-            raise ValueError("ID de producto no existe.")
-        del self.productos[id_producto]
+    def quitar_producto(self, id_producto):
+        if id_producto not in self.catalogo:
+            raise ValueError("El ID del producto no existe.")
+        del self.catalogo[id_producto]
 
-    def actualizar_stock(self, id_producto, cantidad):
-        if id_producto not in self.productos:
-            raise ValueError("ID de producto no existe.")
-        self.productos[id_producto]['cantidad'] = cantidad
+    def modificar_stock(self, id_producto, cantidad):
+        if id_producto not in self.catalogo:
+            raise ValueError("El ID del producto no existe.")
+        self.catalogo[id_producto]['cantidad'] = cantidad
 
-    def consultar_producto(self, id_producto):
-        if id_producto not in self.productos:
-            raise ValueError("ID de producto no existe.")
-        return self.productos[id_producto]
+    def ver_producto(self, id_producto):
+        if id_producto not in self.catalogo:
+            raise ValueError("El ID del producto no existe.")
+        return self.catalogo[id_producto]
 
 
-class CalculadoraDescuentos:
+class GestorDescuentos:
     @staticmethod
-    def calcular_descuento(precio, porcentaje):
+    def aplicar_descuento(precio, porcentaje):
         if precio < 0:
-            raise ValueError("El precio debe ser mayor a cero.")
+            raise ValueError("El precio debe ser positivo.")
         if porcentaje < 0 or porcentaje > 100:
-            raise ValueError("El porcentaje de descuento debe estar entre 0 y 100.")
+            raise ValueError("El porcentaje debe estar entre 0 y 100.")
         return precio * (1 - porcentaje / 100)
 
 
-class Usuario:
+class AdministracionUsuarios:
     def __init__(self):
-        self.usuarios = {}
+        self.registro_usuarios = {}
 
-    def registrar_usuario(self, nombre, email):
-        if nombre in self.usuarios:
-            raise ValueError("Nombre de usuario ya registrado.")
-        self.usuarios[nombre] = email
+    def registrar(self, nombre, correo):
+        if nombre in self.registro_usuarios:
+            raise ValueError("El nombre de usuario ya está registrado.")
+        self.registro_usuarios[nombre] = correo
 
-    def iniciar_sesion(self, nombre):
-        if nombre not in self.usuarios:
+    def autenticar(self, nombre):
+        if nombre not in self.registro_usuarios:
             raise ValueError("Usuario no encontrado.")
         return True
 
-    def recuperar_contrasena(self, email):
-        if email not in self.usuarios.values():
-            raise ValueError("Email no registrado.")
-        return f"Enlace de recuperación enviado a {email}"
+    def restablecer_clave(self, correo):
+        if correo not in self.registro_usuarios.values():
+            raise ValueError("Correo no registrado.")
+        return f"Enlace de recuperación enviado a {correo}"
 
 
-class Tarea:
+class GestionTareas:
     def __init__(self):
-        self.tareas = {}
+        self.lista_tareas = {}
 
-    def crear_tarea(self, id_tarea, titulo, fecha_vencimiento):
-        if id_tarea in self.tareas:
-            raise ValueError("ID de tarea ya existe.")
-        self.tareas[id_tarea] = {'titulo': titulo, 'fecha_vencimiento': fecha_vencimiento, 'completada': False}
+    def crear(self, id_tarea, titulo, fecha_limite):
+        if id_tarea in self.lista_tareas:
+            raise ValueError("El ID de la tarea ya existe.")
+        self.lista_tareas[id_tarea] = {'titulo': titulo, 'fecha_limite': fecha_limite, 'finalizada': False}
 
-    def marcar_completada(self, id_tarea):
-        if id_tarea not in self.tareas:
-            raise ValueError("ID de tarea no encontrada.")
-        self.tareas[id_tarea]['completada'] = True
+    def marcar_como_finalizada(self, id_tarea):
+        if id_tarea not in self.lista_tareas:
+            raise ValueError("El ID de la tarea no fue encontrado.")
+        self.lista_tareas[id_tarea]['finalizada'] = True
 
-    def eliminar_tarea(self, id_tarea):
-        if id_tarea not in self.tareas:
-            raise ValueError("ID de tarea no encontrada.")
-        del self.tareas[id_tarea]
+    def borrar_tarea(self, id_tarea):
+        if id_tarea not in self.lista_tareas:
+            raise ValueError("El ID de la tarea no fue encontrado.")
+        del self.lista_tareas[id_tarea]
 
-    def listar_pendientes(self):
-        return [tarea for tarea in self.tareas.values() if not tarea['completada']]
+    def ver_pendientes(self):
+        return [tarea for tarea in self.lista_tareas.values() if not tarea['finalizada']]
 
 
-class Reserva:
+class SistemaReservas:
     def __init__(self):
-        self.reservas = []
+        self.lista_reservas = []
 
-    def crear_reserva(self, fecha, hora, num_personas):
-        self.reservas.append({'fecha': fecha, 'hora': hora, 'num_personas': num_personas})
+    def hacer_reserva(self, fecha, hora, personas):
+        self.lista_reservas.append({'fecha': fecha, 'hora': hora, 'personas': personas})
 
-    def cancelar_reserva(self, fecha, hora):
-        self.reservas = [r for r in self.reservas if not (r['fecha'] == fecha and r['hora'] == hora)]
+    def anular_reserva(self, fecha, hora):
+        self.lista_reservas = [reserva for reserva in self.lista_reservas if not (reserva['fecha'] == fecha and reserva['hora'] == hora)]
 
-    def verificar_disponibilidad(self, fecha, hora):
-        return all(r['fecha'] != fecha or r['hora'] != hora for r in self.reservas)
+    def hay_disponibilidad(self, fecha, hora):
+        return all(reserva['fecha'] != fecha or reserva['hora'] != hora for reserva in self.lista_reservas)
 
-    def listar_reservas(self):
-        return self.reservas
+    def ver_reservas(self):
+        return self.lista_reservas
